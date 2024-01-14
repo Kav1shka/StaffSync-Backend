@@ -1,0 +1,17 @@
+{
+  "name": "staffsync-backend",
+  "version": "1.0.0",
+  "description": "employee management system",
+  "main": "Server.js",
+  "scripts": {
+    "test": "start",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "type": "module"
+  },
+  "author": "SPMUKN De Alwis",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
