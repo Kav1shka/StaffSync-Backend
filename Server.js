@@ -17,5 +17,6 @@ app.use(bodyParser.json());
 
 
 // app.use("/users", users)
-// const AuthRouter = require("./Routes/AuthRoute");
-// app.use("/User", AuthRouter);
+const AuthRouter = require("./Routes/AuthRoute");
+app.use("/User", AuthRouter);
+app.listen(PORT,()=> console.log(`Server running on PORT ${PORT}`))

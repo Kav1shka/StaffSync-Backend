@@ -1,50 +1,50 @@
   //Driver register
-const { registerValid, loginValid } = require("../validations.js");
-const Driver = require("../Models/Driver.js");
-const PoliceOfficer = require("../Models/PoliceOfficer.js");
+// const { registerValid, loginValid } = require("../validations.js");
+// const Driver = require("../Models/Driver.js");
+// const PoliceOfficer = require("../Models/PoliceOfficer.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const database=require('../Services/Database.js')
   
 const authController={
 
-
-
 EmployeeRegister: async (req, res) => {
     try {
-      const Email = req.body.Email;
-      const Fname = req.body.Fname;
-      const Lname = req.body.Lname;
-      const Password = req.body.Password;
-      const NIC = req.body.NIC;
-      const Province = req.body.Province;
+      const email = req.body.email;
+      const fname = req.body.fname;
+      const lname = req.body.lname;
+      const password = req.body.password;
+      const nic = req.body.nic;
+      const address = req.body.Province;
       const District  = req.body.District;
-      const errorMessage = registerValid(
-      Email ,
-      Fname ,
-      Lname ,
-      Password ,
-      NIC ,
-      Province ,
-      District 
-      )
+      // const errorMessage = registerValid(
+      // email ,
+      // fname ,
+      // lname ,
+      // password ,
+      // nic ,
+      // address 
+      // )
       if (errorMessage) return res.status(400).json({ message: errorMessage });
-      const DriverExists = await Driver.findOne({ NIC });
+
+      const DriverExists = await database.pool.query({
+        text: `SELECT EXISTS (SELECT * FROM Employee WHERE name =$1)`,
+        values: [nic]
+      });
       if (DriverExists) {
         return res
           .status(400)
           .json({ message: "This NIC Already Uesd" });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
-      await new Driver({
-        Email ,
-        Fname ,
-        Lname ,
-        Password :hashedPassword,
-        NIC ,
-        Province ,
-        District 
-      }).save();
+      const  result=await database.pool.query({
+        text:
+             ` INSERT INTO Employee ( email , fname , lname , password , nic ,address )
+              VALUES ($1, $2, $3, $4, $5, $6, $7)
+              RETURNING *`,
+              
+        
+      });
       res.status(201).json({
         message: "You have successfully registered. Please login now",
       });
