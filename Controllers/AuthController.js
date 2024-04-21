@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 const database=require('../Services/Database.js')
   
 const authController={
-
 EmployeeRegister: async (req, res) => {
     try {
       const email = req.body.email;
@@ -16,7 +15,7 @@ EmployeeRegister: async (req, res) => {
       const password = req.body.password;
       const nic = req.body.nic;
       const address = req.body.Province;
-      const District  = req.body.District;
+    
       // const errorMessage = registerValid(
       // email ,
       // fname ,
@@ -25,7 +24,8 @@ EmployeeRegister: async (req, res) => {
       // nic ,
       // address 
       // )
-      if (errorMessage) return res.status(400).json({ message: errorMessage });
+      // if (errorMessage) return res.status(400).json({ message: errorMessage });
+      
 
       // const DriverExists = await database.pool.query({
       //   text: `SELECT EXISTS (SELECT * FROM Employee WHERE name =$1)`,
@@ -37,8 +37,8 @@ EmployeeRegister: async (req, res) => {
       //     .json({ message: "This NIC Already Uesd" });
       // }
       // const hashedPassword = await bcrypt.hash(password, 10);
-      const  result=await database.pool.query( 'INSERT INTO Employee ( email , fname , lname , password , nic ,address ) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [email,fname,lname,password,nic,address,District]
+      const  result=await database.pool.query( 'INSERT INTO Employee ( email , fname , lname , password , nic ,address ) VALUES ($1, $2, $3, $4, $5, $6)',
+      [email,fname,lname,password,nic,address]
       );
       res.status(201).json({
         message: "You have successfully registered. Please login now",

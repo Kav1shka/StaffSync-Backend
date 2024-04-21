@@ -5,7 +5,9 @@ const {EmployeeRegister}=require("../Controllers/AuthController");
 
 //Driver Routes
 router.post("/EmployeeRegister",function(req,res){
-    EmployeeRegister
+    EmployeeRegister(req, res);
+
+    
 });
 
 // router.post("/DriverLogin",function(req,res){
