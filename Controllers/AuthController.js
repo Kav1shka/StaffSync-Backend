@@ -27,26 +27,22 @@ EmployeeRegister: async (req, res) => {
       // )
       if (errorMessage) return res.status(400).json({ message: errorMessage });
 
-      const DriverExists = await database.pool.query({
-        text: `SELECT EXISTS (SELECT * FROM Employee WHERE name =$1)`,
-        values: [nic]
-      });
-      if (DriverExists) {
-        return res
-          .status(400)
-          .json({ message: "This NIC Already Uesd" });
-      }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const  result=await database.pool.query({
-        text:
-             ` INSERT INTO Employee ( email , fname , lname , password , nic ,address )
-              VALUES ($1, $2, $3, $4, $5, $6, $7)
-              RETURNING *`,
-              
-        
-      });
+      // const DriverExists = await database.pool.query({
+      //   text: `SELECT EXISTS (SELECT * FROM Employee WHERE name =$1)`,
+      //   values: [nic]
+      // });
+      // if (DriverExists) {
+      //   return res
+      //     .status(400)
+      //     .json({ message: "This NIC Already Uesd" });
+      // }
+      // const hashedPassword = await bcrypt.hash(password, 10);
+      const  result=await database.pool.query( 'INSERT INTO Employee ( email , fname , lname , password , nic ,address ) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [email,fname,lname,password,nic,address,District]
+      );
       res.status(201).json({
         message: "You have successfully registered. Please login now",
+        result
       });
     } catch (error) {
       console.log(error);

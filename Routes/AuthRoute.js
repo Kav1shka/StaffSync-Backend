@@ -1,7 +1,7 @@
 const express=require("express");
 const router = express.Router();
 
-const {register}=require("../Controllers/AuthController");
+const {EmployeeRegister}=require("../Controllers/AuthController");
 
 //Driver Routes
 router.post("/EmployeeRegister",function(req,res){
