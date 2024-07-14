@@ -37,9 +37,11 @@ EmployeeRegister: async (req, res) => {
       //     .json({ message: "This NIC Already Uesd" });
       // }
       // const hashedPassword = await bcrypt.hash(password, 10);
+      
       const  result=await database.pool.query( 'INSERT INTO Employee ( email , fname , lname , password , nic ,address ) VALUES ($1, $2, $3, $4, $5, $6)',
       [email,fname,lname,password,nic,address]
       );
+      console.log(result);
       res.status(201).json({
         message: "You have successfully registered. Please login now",
         result

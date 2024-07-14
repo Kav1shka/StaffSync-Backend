@@ -2,7 +2,7 @@ const {Pool}=require('pg')
 
 const pool=new Pool({
     
-connectionString: 'postgres://dvdwwsrc:RsE5uaSxoRP0RNXQYfX2f_ef6cK4gWAv@bubble.db.elephantsql.com/dvdwwsrc'
+connectionString: 'postgres://thiwnhco:3W4zNPIDTmLuB_pjTUymvz0HW_BbIMqE@kala.db.elephantsql.com/thiwnhco'
 
 })
 
@@ -17,3 +17,15 @@ pool.connect((err, client, done) => {
 module.exports={
     pool
 };
+
+// const{Client}=require('pg');
+
+// const client=new Client({
+//   host:"localhost",
+//   user:"postgres",
+//   port:"5432",
+//   password:"123",
+//   database:"StaffSyncDB"
+// })
+
+// client.connect();
