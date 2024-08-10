@@ -15,8 +15,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-console.log("kk");
-// app.use("/users", users)
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);
 app.listen(PORT,()=> console.log(`Server running on PORT ${PORT}`))
