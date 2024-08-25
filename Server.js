@@ -2,11 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const DB=require('./Services/Database')
+// const DB=require('./Services/Database')
 
-const dotenv = require("dotenv");
-dotenv.config();
-
+require("dotenv").config({ path: `${process.cwd()}/.env`});
 const app = express();
 mongoose.set("strictQuery", false);
 
