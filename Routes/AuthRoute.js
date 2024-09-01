@@ -1,19 +1,19 @@
 const express=require("express");
 const router = express.Router();
 
-const {EmployeeRegister,EmployeeLogin}=require("../Controllers/AuthController");
+const {signup}=require("../Controllers/AuthController");
 
 //Driver Routes
-router.post("/EmployeeRegister",function(req,res){
+router.post("/UserSignup",function(req,res){
     
-    EmployeeRegister(req, res);
+    signup(req, res);
     
 }), 
 
-router.post("/EmployeeLogin",function(req,res){
+// router.post("/EmployeeLogin",function(req,res){
     
-    EmployeeLogin(req, res);
+//     EmployeeLogin(req, res);
     
     
-});
+// });
 module.exports= router;

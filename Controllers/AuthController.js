@@ -1,8 +1,8 @@
 const user = require('../db/models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync.js');
+const AppError = require('../utils/appError.js');
 const database=require('../Services/Database.js')
   
 
@@ -59,50 +59,90 @@ const signup = catchAsync(async (req, res, next) => {
   });
 });
 
+const authentication = catchAsync(async (req, res, next) => {
+  // 1. get the token from headers
+  let idToken = '';
+  if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+  ) {
+      // Bearer asfdasdfhjasdflkkasdf
+      idToken = req.headers.authorization.split(' ')[1];
+  }
+  if (!idToken) {
+      return next(new AppError('Please login to get access', 401));
+  }
+  // 2. token verification
+  const tokenDetail = jwt.verify(idToken, process.env.JWT_SECRET_KEY);
+  // 3. get the user detail from db and add to req object
+  const freshUser = await user.findByPk(tokenDetail.id);
+
+  if (!freshUser) {
+      return next(new AppError('User no longer exists', 400));
+  }
+  req.user = freshUser;
+  return next();
+});
+
+const restrictTo = (...userType) => {
+  const checkPermission = (req, res, next) => {
+      if (!userType.includes(req.user.userType)) {
+          return next(
+              new AppError(
+                  "You don't have permission to perform this action",
+                  403
+              )
+          );
+      }
+      return next();
+  };
+
+  return checkPermission;
+};
 
    // Employee login
-   EmployeeLogin: async (req, res) => {
-    try {
-      const { nic, password } = req.body;
-      // const errorMessage = loginValid(nic, password);
-      // if (errorMessage) return res.status(400).json({ message: errorMessage });
+  //  EmployeeLogin: async (req, res) => {
+  //   try {
+  //     const { nic, password } = req.body;
+  //     // const errorMessage = loginValid(nic, password);
+  //     // if (errorMessage) return res.status(400).json({ message: errorMessage });
 
-      const result = await database.pool.query('SELECT password FROM Employee WHERE nic = $1', [nic]);
-      const driver = result.rows[0];
-      console.log(driver);
+  //     const result = await database.pool.query('SELECT password FROM Employee WHERE nic = $1', [nic]);
+  //     const driver = result.rows[0];
+  //     console.log(driver);
 
     
-      const Password = await database.pool.query('SELECT FROM Employee WHERE nic = $1', [password]);
-      console.log(Password);
-      // console.log(Password);
-      // const details = await Driver.findOne(Driver);
-      // if (!driver)
-      //   return res.status(400).json({ message: "Not registered NIC" });
+  //     const Password = await database.pool.query('SELECT FROM Employee WHERE nic = $1', [password]);
+  //     console.log(Password);
+  //     // console.log(Password);
+  //     // const details = await Driver.findOne(Driver);
+  //     // if (!driver)
+  //     //   return res.status(400).json({ message: "Not registered NIC" });
 
-      // const match = await bcrypt.compare(password, Password);
+  //     // const match = await bcrypt.compare(password, Password);
 
-      // console.log(match);
-      // if (!match) {
-      //   return res.status(400).json({ message: "Invalid NIC or password" });
-      // }
+  //     // console.log(match);
+  //     // if (!match) {
+  //     //   return res.status(400).json({ message: "Invalid NIC or password" });
+  //     // }
 
-      // const token = jwt.sign({ _id: Driver._id }, process.env.JWT_SECRET, {
-      //   expiresIn: "7d",
-      // });
+  //     // const token = jwt.sign({ _id: Driver._id }, process.env.JWT_SECRET, {
+  //     //   expiresIn: "7d",
+  //     // });
 
-      // Driver.password = undefined;  
-      res
-        .status(200)
-        .json({
-          message: "You have successfully logged in",
-          // Driver,
-          // token,
-          // details,
-        });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
-    }
-  }
+  //     // Driver.password = undefined;  
+  //     res
+  //       .status(200)
+  //       .json({
+  //         message: "You have successfully logged in",
+  //         // Driver,
+  //         // token,
+  //         // details,
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // }
 
-module.exports=authController;
+  module.exports = { signup, authentication, restrictTo };
