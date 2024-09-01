@@ -1,32 +1,64 @@
-  //Driver register
-const { registerValid, loginValid } = require("../validations.js");
-// const Driver = require("../Models/Driver.js");
-// const PoliceOfficer = require("../Models/PoliceOfficer.js");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const user = require('../db/models/user');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 const database=require('../Services/Database.js')
   
-const authController={
-EmployeeRegister: async (req, res) => {
-    try {
-      const email = req.body.email;
-      const fname = req.body.fname;
-      const lname = req.body.lname;
-      const password = req.body.password;
-      const nic = req.body.nic;
-      const address = req.body.Province;
-      console.log("came here1");
-      const  result=await database.pool.query( 'INSERT INTO Employee ( email , fname , lname , password , nic ,address ) VALUES ($1, $2, $3, $4, $5, $6)',
-      [email,fname,lname,password,nic,address]
-      );
-      res.status(201).json({
-        message: "You have successfully registered. Please login now",
-        result
-      });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+
+const generateToken = (payload) => {
+  return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+const signup = catchAsync(async (req, res, next) => {
+  const body = req.body;
+
+  if (!['1', '2'].includes(body.userType)) {
+      throw new AppError('Invalid user Type', 400);
+  }
+
+  const newUser = await user.create({
+      userType: body.userType,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+      NIC:body.NIC,
+      password: body.password,
+      confirmPassword: body.confirmPassword,
+  });
+
+  if (!newUser) {
+      return next(new AppError('Failed to create the user', 400));
+  }
+
+  const userExists = await user.findOne({ NIC });
+  if (userExists) {
+    return res
+      .status(400)
+      .json({ message: "This NIC Already Uesd" });
+  }
+  if (Password !== confirmPassword){
+      return res
+      .status(400)
+      .json({message: "Passwords do not match"})
+  }
+  const hashedPassword = await bcrypt.hash(Password, 10);
+  const result = newUser.toJSON();
+
+  delete result.password;
+  delete result.deletedAt;
+
+  result.token = generateToken({
+      id: result.id,
+  });
+
+  return res.status(201).json({
+      status: 'success',
+      data: result,
+  });
+});
+
 
    // Employee login
    EmployeeLogin: async (req, res) => {
@@ -72,5 +104,5 @@ EmployeeRegister: async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   }
-}
+
 module.exports=authController;
