@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const catchAsync = require('../utils/catchAsync.js');
 const AppError = require('../utils/appError.js');
-const database=require('../Services/Database.js')
+
   
+console.log("came here 3");
 
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
@@ -17,7 +18,7 @@ const signup = catchAsync(async (req, res, next) => {
   if (!['1', '2'].includes(body.userType)) {
       throw new AppError('Invalid user Type', 400);
   }
-
+  console.log("came here 4");
   const newUser = await user.create({
       userType: body.userType,
       firstName: body.firstName,
@@ -27,11 +28,11 @@ const signup = catchAsync(async (req, res, next) => {
       password: body.password,
       confirmPassword: body.confirmPassword,
   });
-
+  console.log("came here 4");
   if (!newUser) {
       return next(new AppError('Failed to create the user', 400));
   }
-
+  console.log("came here 5");
   const userExists = await user.findOne({ NIC });
   if (userExists) {
     return res

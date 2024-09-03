@@ -7,8 +7,24 @@ module.exports={
     "database": process.env.DB_NAME,
     "host": process.env.DB_HOST,
     "port": process.env.DB_PORT,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    logging: false,
   }
+
+  // module.exports={
+//     pool,
+//     DB: 'thiwnhco',
+//     USER: 'thiwnhco',
+//     PASSWORD: '3W4zNPIDTmLuB_pjTUymvz0HW_BbIMqE',
+//     HOST: 'kala.db.elephantsql.com',
+//     dialect: 'postgres',
+//     pool: {
+//       max: 5,
+//       min: 0,
+//       acquire: 30000,
+//       idle: 10000
+//     }
+// };
   // ,
   // "test": {
   //   "username": "root",

@@ -1,18 +1,25 @@
+require('dotenv').config({ path: `${process.cwd()}/.env` });
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const DB=require('./Services/Database')
+const catchAsync = require('./utils/catchAsync');
+const AppError = require('./utils/appError');
 
-require("dotenv").config({ path: `${process.cwd()}/.env`});
+
 const app = express();
-mongoose.set("strictQuery", false);
+app.use(express.json());
+// app.use(cors());
 
-const PORT = process.env.PORT || 8000 ;
-app.use(cors());
-
-app.use(bodyParser.json());
-
+// app.use(bodyParser.json());
+console.log("came here 1");
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);
+// app.use(
+//     '*',
+//     catchAsync(async (req, res, next) => {
+//         throw new AppError(`Can't find ${req.originalUrl} on this server`, 404);
+//     })
+// );
+const PORT = process.env.PORT || 8000 ;
 app.listen(PORT,()=> console.log(`Server running on PORT ${PORT}`))
