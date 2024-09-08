@@ -12,13 +12,16 @@ const generateToken = (payload) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
+
+console.log("came here 4");
+
 const signup = catchAsync(async (req, res, next) => {
   const body = req.body;
-
+console.log(body);
   if (!['1', '2'].includes(body.userType)) {
       throw new AppError('Invalid user Type', 400);
   }
-  console.log("came here 4");
+  console.log("came here 5");
   const newUser = await user.create({
       userType: body.userType,
       firstName: body.firstName,
@@ -28,11 +31,11 @@ const signup = catchAsync(async (req, res, next) => {
       password: body.password,
       confirmPassword: body.confirmPassword,
   });
-  console.log("came here 4");
+  console.log("came here 6");
   if (!newUser) {
       return next(new AppError('Failed to create the user', 400));
   }
-  console.log("came here 5");
+  console.log("came here 7");
   const userExists = await user.findOne({ NIC });
   if (userExists) {
     return res
