@@ -1,5 +1,5 @@
 'use strict';
-const { Model, Sequelize, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 console.log("came here 8");
 const sequelize = require('../../config/database');
@@ -10,7 +10,7 @@ const user = sequelize.define(
     'user',
     {
         id: {
-            allowNull: false,
+            allowNull: true,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
