@@ -101,6 +101,7 @@ const login = catchAsync(async (req, res, next) => {
         token,
     });
 });
+
 const restrictTo = (...userType) => {
   const checkPermission = (req, res, next) => {
       if (!userType.includes(req.user.userType)) {
@@ -113,7 +114,6 @@ const restrictTo = (...userType) => {
       }
       return next();
   };
-
   return checkPermission;
 };
 
