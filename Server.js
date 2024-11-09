@@ -15,11 +15,14 @@ app.use(express.json());
 console.log("came here 1");
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);
-// app.use(
-//     '*',
-//     catchAsync(async (req, res, next) => {
-//         throw new AppError(`Can't find ${req.originalUrl} on this server`, 404);
-//     })
-// );
+
+const productRouter = require("./Routes/product");
+app.use("/products", productRouter);
+app.use(
+    '*',
+    catchAsync(async (req, res, next) => {
+        throw new AppError(`Can't find ${req.originalUrl} on this server`, 404);
+    })
+);
 const PORT = process.env.PORT || 8000 ;
 app.listen(PORT,()=> console.log(`Server running on PORT ${PORT}`))
