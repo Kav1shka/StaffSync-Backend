@@ -18,6 +18,7 @@ app.use("/User", AuthRouter);
 
 const productRouter = require("./Routes/product");
 app.use("/products", productRouter);
+
 app.use(
     '*',
     catchAsync(async (req, res, next) => {

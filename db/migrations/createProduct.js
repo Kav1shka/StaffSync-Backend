@@ -1,5 +1,6 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+// /** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('product', {
@@ -16,11 +17,11 @@ module.exports = {
             isFeatured: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false,
-                allowNull: false,
+                allowNull: true,
             },
             productImage: {
                 type: Sequelize.ARRAY(Sequelize.STRING),
-                allowNull: false,
+                allowNull: true,
             },
             price: {
                 type: Sequelize.DECIMAL,
@@ -36,7 +37,7 @@ module.exports = {
             },
             productUrl: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             category: {
                 type: Sequelize.ARRAY(Sequelize.STRING),
@@ -65,7 +66,7 @@ module.exports = {
             },
         });
     },
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface, _Sequelize) {
         await queryInterface.dropTable('product');
     },
 };

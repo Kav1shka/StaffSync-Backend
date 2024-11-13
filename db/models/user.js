@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 console.log("came here 8");
 const sequelize = require('../../config/database');
 const AppError = require('../../utils/appError');
+const product = require('./product');
 // const project = require('./project');
 console.log("came here 9");
 const user = sequelize.define(
@@ -129,9 +130,9 @@ const user = sequelize.define(
     }
 );
 console.log("cam here 10");
-// user.hasMany(project, { foreignKey: 'createdBy' });
-// project.belongsTo(user, {
-//     foreignKey: 'createdBy',
-// });
+user.hasMany(product, { foreignKey: 'createdBy' });
+product.belongsTo(user, {
+    foreignKey: 'createdBy',
+});
 
 module.exports = user;
