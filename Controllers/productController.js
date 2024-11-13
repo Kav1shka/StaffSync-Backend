@@ -1,12 +1,16 @@
-const project = require('../db/models/product');
+const product= require('../db/models/product');
 const user = require('../db/models/user');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 const createProduct = catchAsync(async (req, res, next) => {
+    
     const body = req.body;
-    const userId = req.user.id;
-    const newProject = await project.create({
+    console.log(body);
+    const userId = req.body.id;
+    console.log(userId);
+    const newProduct = await product.create({
+        id: body.id,
         title: body.title,
         // productImage: body.productImage,
         price: body.price,
@@ -14,13 +18,13 @@ const createProduct = catchAsync(async (req, res, next) => {
         description: body.description,
         // productUrl: body.productUrl,
         category: body.category,
-        tags: body.tags,
+        // tags: body.tags,
         createdBy: userId,
     });
 
     return res.status(201).json({
         status: 'success',
-        data: newProject,
+        data: newProduct ,
     });
 });
 

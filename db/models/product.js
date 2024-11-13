@@ -1,9 +1,9 @@
-
+'use strict';
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
 
-module.exports = sequelize.define(
-    'project',
+const product = sequelize.define(
+    'product',
     {
         id: {
             allowNull: false,
@@ -25,8 +25,8 @@ module.exports = sequelize.define(
         },
         isFeatured: {
             type: DataTypes.BOOLEAN,
-            defaultValue: false,
-            allowNull: false,
+            defaultValue: true,
+            allowNull: true,
             validate: {
                 isIn: {
                     args: [[true, false]],
@@ -36,12 +36,12 @@ module.exports = sequelize.define(
         },
         productImage: {
             type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: 'productImage cannot be null',
-                },
-            },
+            allowNull: true,
+            // validate: {
+            //     notNull: {
+            //         msg: 'productImage cannot be null',
+            //     },
+            // },
         },
         price: {
             type: DataTypes.DECIMAL,
@@ -81,18 +81,18 @@ module.exports = sequelize.define(
         },
         productUrl: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: 'productUrl cannot be null',
-                },
-                notEmpty: {
-                    msg: 'productUrl cannot be empty',
-                },
-                isUrl: {
-                    msg: 'Invalid productUrl string',
-                },
-            },
+            allowNull: true,
+            // validate: {
+            //     notNull: {
+            //         msg: 'productUrl cannot be null',
+            //     },
+            //     notEmpty: {
+            //         msg: 'productUrl cannot be empty',
+            //     },
+            //     isUrl: {
+            //         msg: 'Invalid productUrl string',
+            //     },
+            // },
         },
         category: {
             type: DataTypes.ARRAY(DataTypes.STRING),
@@ -105,12 +105,12 @@ module.exports = sequelize.define(
         },
         tags: {
             type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: 'tags cannot be null',
-                },
-            },
+            allowNull: true,
+            // validate: {
+            //     notNull: {
+            //         msg: 'tags cannot be null',
+            //     },
+            // },
         },
         createdBy: {
             type: DataTypes.INTEGER,
@@ -131,6 +131,7 @@ module.exports = sequelize.define(
     {
         paranoid: true,
         freezeTableName: true,
-        modelName: 'project',
+        modelName: 'product',
     }
 );
+module.exports = product;
