@@ -9,19 +9,20 @@ const createProduct = catchAsync(async (req, res, next) => {
     console.log(body);
     const userId = req.body.id;
     console.log(userId);
-    const newProduct = await product.create({
+    const newProduct =await product.create({
         id: body.id,
         title: body.title,
-        // productImage: body.productImage,
+        productImage: body.productImage,
         price: body.price,
         shortDescription: body.shortDescription,
         description: body.description,
-        // productUrl: body.productUrl,
-        category: body.category,
-        // tags: body.tags,
+        productImage: body.productImage || [],
+        productUrl: body.productUrl|| null,
+        category: body.category || [],
+        tags: body.tags|| [],
         createdBy: userId,
     });
-
+console.log("kaka");
     return res.status(201).json({
         status: 'success',
         data: newProduct ,
