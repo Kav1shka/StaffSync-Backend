@@ -12,12 +12,14 @@ const router = require('express').Router();
 router
     .route('/')
     // .post(authentication, restrictTo('1'), createProduct)
-    .post(createProduct);
+    .post(createProduct)
     // .get(authentication, restrictTo('1'), getAllProduct);
+    .get( getAllProduct);
 
 router
     .route('/:id')
-    .get(authentication, restrictTo('1'), getProductById)
+    // .get(authentication, restrictTo('1'), getProductById)
+    .get( getProductById)
     .patch(authentication, restrictTo('1'), updateProduct)
     .delete(authentication, restrictTo('1'), deleteProduct);
 

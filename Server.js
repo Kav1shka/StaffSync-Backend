@@ -12,7 +12,7 @@ app.use(express.json());
 // app.use(cors());
 
 // app.use(bodyParser.json());
-console.log("came here 1");
+
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);
 

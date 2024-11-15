@@ -1,12 +1,9 @@
 'use strict';
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
-console.log("came here 8");
 const sequelize = require('../../config/database');
 const AppError = require('../../utils/appError');
 const product = require('./product');
-// const project = require('./project');
-console.log("came here 9");
 const user = sequelize.define(
     'user',
     {
@@ -129,7 +126,6 @@ const user = sequelize.define(
         modelName: 'user',
     }
 );
-console.log("cam here 10");
 user.hasMany(product, { foreignKey: 'createdBy' });
 product.belongsTo(user, {
     foreignKey: 'createdBy',
