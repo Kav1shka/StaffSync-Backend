@@ -22,7 +22,6 @@ const createProduct = catchAsync(async (req, res, next) => {
         tags: body.tags|| [],
         createdBy: userId,
     });
-console.log("kaka");
     return res.status(201).json({
         status: 'success',
         data: newProduct ,
@@ -30,12 +29,14 @@ console.log("kaka");
 });
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-    const userId = req.user.id;
-    const result = await project.findAll({
-        include: user,
-        where: { createdBy: userId },
-    });
+    // const userId = req.user.id;
+    // const result = await project.findAll({
+    //     include: user,
+    //     where: { createdBy: userId },
+    // });
+    const result = await product.findAll({
 
+    });
     return res.json({
         status: 'success',
         data: result,
@@ -43,10 +44,10 @@ const getAllProduct = catchAsync(async (req, res, next) => {
 });
 
 const getProductById = catchAsync(async (req, res, next) => {
-    const projectId = req.params.id;
-    const result = await project.findByPk(projectId, { include: user });
+    const productId = req.params.id;
+    const result = await product.findByPk(productId, { include: user });
     if (!result) {
-        return next(new AppError('Invalid project id', 400));
+        return next(new AppError('Invalid product id', 400));
     }
     return res.json({
         status: 'success',

@@ -3,25 +3,21 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const catchAsync = require('../utils/catchAsync.js');
 const AppError = require('../utils/appError.js');
-
   
-console.log("came here 3");
-
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
-console.log("came here 4");
 
 const signup = catchAsync(async (req, res, next) => {
   const body = req.body;
-console.log(body);
+
   if (!['1', '2'].includes(body.userType)) {
       throw new AppError('Invalid user Type', 400);
   }
-  console.log("came here 5");
+  
   const newUser = await user.create({
       userType: body.userType,
       firstName: body.firstName,
@@ -35,7 +31,7 @@ console.log(body);
   if (!newUser) {
       return next(new AppError('Failed to create the user', 400));
   }
-  console.log("came here 7");
+  
   
   const hashedPassword = await bcrypt.hash(password, 10);
   const result = newUser.toJSON();
@@ -57,6 +53,7 @@ console.log(body);
 const authentication = catchAsync(async (req, res, next) => {
   // 1. get the token from headers
   let idToken = '';
+  console.log(idToken);
   if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
@@ -119,5 +116,5 @@ const restrictTo = (...userType) => {
 
    
 //   module.exports = { signup, authentication, restrictTo };
-console.log("came here 8");
+
   module.exports = { signup,authentication,login,restrictTo };
