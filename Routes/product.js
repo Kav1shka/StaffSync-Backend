@@ -13,8 +13,8 @@ router
     .route('/')
     // .post(authentication, restrictTo('1'), createProduct)
     .post(createProduct)
-    // .get(authentication, restrictTo('1'), getAllProduct);
-    .get( getAllProduct);
+    .get(authentication, getAllProduct);
+    // .get( getAllProduct);
 
 router
     .route('/:id')

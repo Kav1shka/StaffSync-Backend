@@ -2,13 +2,14 @@ const product= require('../db/models/product');
 const user = require('../db/models/user');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const axios = require('axios');
 
 const createProduct = catchAsync(async (req, res, next) => {
     
     const body = req.body;
     console.log(body);
     const userId = req.body.id;
-    console.log(userId);
+    console.log(userId+"kk");
     const newProduct =await product.create({
         id: body.id,
         title: body.title,
@@ -22,6 +23,18 @@ const createProduct = catchAsync(async (req, res, next) => {
         tags: body.tags|| [],
         createdBy: userId,
     });
+
+    console.log("NN");
+    try {
+        await axios.post('http://localhost:1500/add-product', {
+            title: newProduct.title,
+            price: newProduct.price,
+        });
+        console.log('Seller agent notified about new product.');
+    } catch (error) {
+        console.error('Failed to notify seller agent:', error);
+    }
+
     return res.status(201).json({
         status: 'success',
         data: newProduct ,
@@ -29,13 +42,11 @@ const createProduct = catchAsync(async (req, res, next) => {
 });
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-    // const userId = req.user.id;
-    // const result = await project.findAll({
-    //     include: user,
-    //     where: { createdBy: userId },
-    // });
+    const userId = req.user.id;
+    console.log(userId);
     const result = await product.findAll({
-
+        include: user,
+        where: { createdBy: userId },
     });
     return res.json({
         status: 'success',
