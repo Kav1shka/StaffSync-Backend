@@ -96,12 +96,12 @@ const product = sequelize.define(
         },
         category: {
             type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: 'category cannot be null',
-                },
-            },
+            allowNull: true,
+            // validate: {
+            //     notNull: {
+            //         msg: 'category cannot be null',
+            //     },
+            // },
         },
         tags: {
             type: DataTypes.ARRAY(DataTypes.STRING),
