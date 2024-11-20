@@ -21,7 +21,8 @@ const createProduct = catchAsync(async (req, res, next) => {
         productUrl: body.productUrl|| null,
         category: body.category || [],
         tags: body.tags|| [],
-        createdBy: userId,
+        isFeatured:body.isFeatured,
+        
     });
 
     console.log("NN");
@@ -29,6 +30,8 @@ const createProduct = catchAsync(async (req, res, next) => {
         await axios.post('http://localhost:1500/add-product', {
             title: newProduct.title,
             price: newProduct.price,
+        },{ timeout: 100000 ,
+            headers: { 'Content-Type': 'application/json' },
         });
         console.log('Seller agent notified about new product.');
     } catch (error) {
