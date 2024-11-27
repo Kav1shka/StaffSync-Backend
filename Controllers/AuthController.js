@@ -14,12 +14,12 @@ const generateToken = (payload) => {
 const signup = catchAsync(async (req, res, next) => {
   const body = req.body;
 
-  if (!['1', '2'].includes(body.userType)) {
-      throw new AppError('Invalid user Type', 400);
-  }
+//   if (!['1', '2'].includes(body.userType)) {
+//       throw new AppError('Invalid user Type', 400);
+//   }
   
   const newUser = await user.create({
-      userType: body.userType,
+    //   userType: body.userType,
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
@@ -33,7 +33,7 @@ const signup = catchAsync(async (req, res, next) => {
   }
   
   
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(body.password, 10);
   const result = newUser.toJSON();
 
 

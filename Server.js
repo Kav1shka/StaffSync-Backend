@@ -9,9 +9,9 @@ const AppError = require('./utils/appError');
 
 const app = express();
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);

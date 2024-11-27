@@ -13,18 +13,18 @@ const user = sequelize.define(
             primaryKey: true,
             type: DataTypes.INTEGER,
         },
-        userType: {
-            type: DataTypes.ENUM('0', '1', '2'),
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: 'firstName cannot be null',
-                },
-                notEmpty: {
-                    msg: 'firstName cannot be empty',
-                },
-            },
-        },
+        // userType: {
+        //     type: DataTypes.ENUM('0', '1', '2'),
+        //     allowNull: false,
+        //     validate: {
+        //         notNull: {
+        //             msg: 'firstName cannot be null',
+        //         },
+        //         notEmpty: {
+        //             msg: 'firstName cannot be empty',
+        //         },
+        //     },
+        // },
         firstName: {
             type: DataTypes.STRING,
             allowNull: false,
