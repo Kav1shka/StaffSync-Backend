@@ -20,7 +20,9 @@ router
     .route('/:id')
     // .get(authentication, restrictTo('1'), getProductById)
     .get( getProductById)
-    .patch(authentication, restrictTo('1'), updateProduct)
-    .delete(authentication, restrictTo('1'), deleteProduct);
+    .patch(updateProduct)
+    // .patch(authentication, restrictTo('1'), updateProduct)
+    .delete(deleteProduct);
+    // .delete(authentication, restrictTo('1'), deleteProduct);
 
 module.exports = router;
