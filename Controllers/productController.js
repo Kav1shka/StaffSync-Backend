@@ -26,17 +26,18 @@ const createProduct = catchAsync(async (req, res, next) => {
     });
 
     console.log("NN");
-    try {
-        await axios.post('http://localhost:1500/add-product', {
+    // try {
+        await axios.post('http://localhost:8080/addproduct', {
+            id:newProduct.id,
             title: newProduct.title,
             price: newProduct.price,
-        },{ timeout: 100000 ,
+        },{ timeout: 300,
             headers: { 'Content-Type': 'application/json' },
         });
         console.log('Seller agent notified about new product.');
-    } catch (error) {
-        console.error('Failed to notify seller agent:', error);
-    }
+    // } catch (error) {
+    //     console.error('Failed to notify seller agent:', error);
+    // }
 
     return res.status(201).json({
         status: 'success',
@@ -58,8 +59,9 @@ const getAllProduct = catchAsync(async (req, res, next) => {
 });
 
 const getProductById = catchAsync(async (req, res, next) => {
-    const productId = req.params.id;
-    const result = await product.findByPk(productId, { include: user });
+    const productId = req.body.id;
+    // const result = await product.findByPk(productId, { include: user });
+    const result = await product.findByPk(productId);
     if (!result) {
         return next(new AppError('Invalid product id', 400));
     }
@@ -70,12 +72,12 @@ const getProductById = catchAsync(async (req, res, next) => {
 });
 
 const updateProduct = catchAsync(async (req, res, next) => {
-    const userId = req.user.id;
-    const productId = req.params.id;
+    // const userId = req.user.id;
+    const productId = req.body.id;
     const body = req.body;
 
-    const result = await project.findOne({
-        where: { id: productId, createdBy: userId },
+    const result = await product.findOne({
+        where: { id: productId },
     });
 
     if (!result) {
@@ -100,12 +102,10 @@ const updateProduct = catchAsync(async (req, res, next) => {
 });
 
 const deleteProduct = catchAsync(async (req, res, next) => {
-    const userId = req.user.id;
-    const productId = req.params.id;
-    const body = req.body;
-
-    const result = await project.findOne({
-        where: { id: productId, createdBy: userId },
+    const productId = req.body.id;
+    
+    const result = await product.findOne({
+        where: { id: productId},
     });
 
     if (!result) {
