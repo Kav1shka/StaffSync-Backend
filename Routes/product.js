@@ -19,7 +19,8 @@ router
 router
     .route('/:id')
     // .get(authentication, restrictTo('1'), getProductById)
-    .get( getProductById)
+    // .get(getProductById)
+    .get(getAllProduct)
     .patch(updateProduct)
     // .patch(authentication, restrictTo('1'), updateProduct)
     .delete(deleteProduct);
