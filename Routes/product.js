@@ -13,14 +13,14 @@ router
     .route('/')
     // .post(authentication, restrictTo('1'), createProduct)
     .post(createProduct)
-    .get(authentication, getAllProduct);
+    .get(getAllProduct);
     // .get( getAllProduct);
 
 router
     .route('/:id')
     // .get(authentication, restrictTo('1'), getProductById)
     // .get(getProductById)
-    .get(getAllProduct)
+  
     .patch(updateProduct)
     // .patch(authentication, restrictTo('1'), updateProduct)
     .delete(deleteProduct);
