@@ -46,11 +46,11 @@ const createProduct = catchAsync(async (req, res, next) => {
 });
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-    const userId = req.user.id;
-    console.log(userId);
+    // const userId = req.user.id;
+    // console.log(userId);
     const result = await product.findAll({
         // include: user,
-        // where: { createdBy: userId },
+        // where: { createdBy: userId }
     });
     return res.json({
         status: 'success',
