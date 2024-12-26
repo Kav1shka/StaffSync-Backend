@@ -3,38 +3,57 @@ const user = require('../db/models/user');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const axios = require('axios');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const fs = require('fs');
+
 
 const createProduct = catchAsync(async (req, res, next) => {
     
-    const body = req.body;
-    console.log(body);
+    const body = await req.body;
     const userId = req.body.id;
-    console.log(userId+"kk");
+   console.log(body);
+
+   if (!body.title || !body.price) {
+    return next(new AppError('Title and price are required fields', 400));
+}
+
+    if (!req.files || !req.files.productImage) {
+        return next(new AppError('No image file uploaded', 400));
+    }
+
+    const file = req.files.productImage; 
+    const uploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
+        folder: 'products', 
+    });
+
+    fs.unlinkSync(filePath);
+
     const newProduct =await product.create({
         id: body.id,
         title: body.title,
-        productImage: body.productImage,
         price: body.price,
-        shortDescription: body.shortDescription,
-        description: body.description,
-        productImage: body.productImage || [],
+        shortDescription: body.shortDescription || '',
+        description: body.description || '',
+        productImage: uploadResult.secure_url,
         productUrl: body.productUrl|| null,
-        category: body.category || [],
-        tags: body.tags|| [],
+        category: body.category  ? JSON.parse(body.category) : [],
+        tags: body.tags? JSON.parse(body.tags) : [],
         isFeatured:body.isFeatured,
         
     });
 
     console.log("NN");
     // try {
-        await axios.post('http://localhost:8080/addproduct', {
-            id:newProduct.id,
-            title: newProduct.title,
-            price: newProduct.price,
-        },{ timeout: 300,
-            headers: { 'Content-Type': 'application/json' },
-        });
-        console.log('Seller agent notified about new product.');
+        // await axios.post('http://localhost:8080/addproduct', {
+        //     id:newProduct.id,
+        //     title: newProduct.title,
+        //     price: newProduct.price,
+        // },{ timeout: 300,
+        //     headers: { 'Content-Type': 'application/json' },
+        // });
+        // console.log('Seller agent notified about new product.');
     // } catch (error) {
     //     console.error('Failed to notify seller agent:', error);
     // }
@@ -121,7 +140,7 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
-    createProduct,
+    createProduct: [upload.single('productImage'), createProduct],
     getAllProduct,
     getProductById,
     updateProduct,
