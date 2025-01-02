@@ -7,16 +7,17 @@ const catchAsync = require('./utils/catchAsync');
 const AppError = require('./utils/appError');
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-app.use(bodyParser.json());
 
 const AuthRouter = require("./Routes/AuthRoute");
 app.use("/User", AuthRouter);
 
 const productRouter = require("./Routes/product");
 app.use("/products", productRouter);
+
+app.use(bodyParser.json());
 
 app.use(
     '*',

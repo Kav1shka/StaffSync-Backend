@@ -11,6 +11,9 @@ const {
 
 const router = require('express').Router();
 
+if (!fs.existsSync('uploads')) {
+    fs.mkdirSync('uploads');
+}
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -23,6 +26,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // Limit to 5MB
+    },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
@@ -32,21 +38,19 @@ const upload = multer({
     },
 });
 
-if (!fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
-}
+
 
 router
     .route('/')
     // .post(authentication, restrictTo('1'), createProduct)
-    .post(upload.single('productImage'), createProduct)
+    .post(upload.single('productImage'),createProduct)
     .get(getAllProduct);
     // .get( getAllProduct);
 
 router
     .route('/:id')
     // .get(authentication, restrictTo('1'), getProductById)
-    // .get(getProductById)
+    .get(getProductById)
   
     .patch(updateProduct)
     // .patch(authentication, restrictTo('1'), updateProduct)
