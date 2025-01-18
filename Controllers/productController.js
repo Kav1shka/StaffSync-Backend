@@ -8,27 +8,33 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const fs = require('fs');
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const createProduct = catchAsync(async (req, res, next) => {
     
     const body = await req.body;
     const userId = req.body.id;
    console.log(body);
-
+   console.log("came here 5")
    if (!body.title || !body.price) {
     return next(new AppError('Title and price are required fields', 400));
 }
-
-    if (!req.files || !req.files.productImage) {
+console.log("came here 6")
+    if (!req.files) {
         return next(new AppError('No image file uploaded', 400));
     }
-
-    const file = req.files.productImage; 
-    const uploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
+    
+    console.log("came here 7")
+    
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'products', 
     });
-
-    fs.unlinkSync(filePath);
+   
+    fs.unlinkSync(file.path);
 
     const newProduct =await product.create({
         id: body.id,
@@ -140,7 +146,7 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
-    createProduct: [upload.single('productImage'), createProduct],
+    createProduct,
     getAllProduct,
     getProductById,
     updateProduct,
