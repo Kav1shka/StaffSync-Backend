@@ -24,7 +24,7 @@ const createProduct = catchAsync(async (req, res, next) => {
     return next(new AppError('Title and price are required fields', 400));
 }
 console.log("came here 6")
-    if (!req.files) {
+    if (!req.file) {
         return next(new AppError('No image file uploaded', 400));
     }
     
@@ -32,9 +32,14 @@ console.log("came here 6")
     
     const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'products', 
+    }).catch((err) => {
+        console.error('Cloudinary upload error:', err);
+        return next(new AppError('Error uploading image to Cloudinary', 500));
     });
    
-    fs.unlinkSync(file.path);
+    fs.unlinkSync(req.file.path);
+
+    console.log(uploadResult.secure_url);
 
     const newProduct =await product.create({
         id: body.id,
