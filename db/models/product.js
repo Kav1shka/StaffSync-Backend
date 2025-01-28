@@ -79,21 +79,21 @@ const product = sequelize.define(
                 },
             },
         },
-        productUrl: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            // validate: {
-            //     notNull: {
-            //         msg: 'productUrl cannot be null',
-            //     },
-            //     notEmpty: {
-            //         msg: 'productUrl cannot be empty',
-            //     },
-            //     isUrl: {
-            //         msg: 'Invalid productUrl string',
-            //     },
-            // },
-        },
+        // productUrl: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        //     // validate: {
+        //     //     notNull: {
+        //     //         msg: 'productUrl cannot be null',
+        //     //     },
+        //     //     notEmpty: {
+        //     //         msg: 'productUrl cannot be empty',
+        //     //     },
+        //     //     isUrl: {
+        //     //         msg: 'Invalid productUrl string',
+        //     //     },
+        //     // },
+        // },
         category: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: true,

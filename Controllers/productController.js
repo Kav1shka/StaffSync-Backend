@@ -40,17 +40,44 @@ console.log("came here 6")
     fs.unlinkSync(req.file.path);
 
     console.log(uploadResult.secure_url);
+    console.log("Type of category:", typeof req.body.category);
+    console.log("Type of tags:", typeof req.body.tags);
 
+    const parsedCategory = typeof req.body.category === 'string' ? JSON.parse(req.body.category) : req.category;
+        const parsedTags = typeof req.body.tags === 'string' ? JSON.parse(req.body.tags) : req.body.tags;
+        const parsedProductImage = Array.isArray(uploadResult.secure_url) ? uploadResult.secure_url : [uploadResult.secure_url];
+
+
+        console.log("Type of category:", typeof parsedCategory);
+        console.log("Type of tags:", typeof parsedTags);
+        console.log("Type of tags:", typeof parsedProductImage);
+
+//     const parsedCategory = Array.isArray(req.category)
+//     ? req.category
+//     : typeof req.category === 'string'
+//     ? JSON.parse(req.category)
+//     : [];
+// const parsedTags = Array.isArray(req.tags)
+//     ? req.tags
+//     : typeof req.tags === 'string'
+//     ? JSON.parse(req.tags)
+//     : [];
+
+    console.log(parsedCategory);
+    console.log(parsedTags);
+    console.log(req.body.category);
     const newProduct =await product.create({
         id: body.id,
         title: body.title,
         price: body.price,
         shortDescription: body.shortDescription || '',
         description: body.description || '',
-        productImage: uploadResult.secure_url,
-        productUrl: body.productUrl|| null,
-        category: body.category  ? JSON.parse(body.category) : [],
-        tags: body.tags? JSON.parse(body.tags) : [],
+        productImage: parsedProductImage,
+        // productUrl: body.productUrl|| null,
+        category: parsedCategory,
+        // category: body.category  ? JSON.parse(body.category) : [],
+        tags: parsedTags,
+        // tags: body.tags? JSON.parse(body.tags) : [],
         isFeatured:body.isFeatured,
         
     });
