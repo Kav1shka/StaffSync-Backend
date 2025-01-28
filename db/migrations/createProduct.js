@@ -35,10 +35,10 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
-            productUrl: {
-                type: Sequelize.STRING,
-                allowNull: true,
-            },
+            // productUrl: {
+            //     type: Sequelize.STRING,
+            //     allowNull: true,
+            // },
             category: {
                 type: Sequelize.ARRAY(Sequelize.STRING),
             },
