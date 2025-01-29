@@ -16,19 +16,16 @@ cloudinary.config({
 
 const createProduct = catchAsync(async (req, res, next) => {
     
-    const body = await req.body;
-    const userId = req.body.id;
-   console.log(body);
-   console.log("came here 5")
+   const body = await req.body;
    if (!body.title || !body.price) {
-    return next(new AppError('Title and price are required fields', 400));
+   return next(new AppError('Title and price are required fields', 400));
 }
-console.log("came here 6")
+
     if (!req.file) {
         return next(new AppError('No image file uploaded', 400));
     }
     
-    console.log("came here 7")
+   
     
     const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'products', 
@@ -44,24 +41,13 @@ console.log("came here 6")
     console.log("Type of tags:", typeof req.body.tags);
 
     const parsedCategory = typeof req.body.category === 'string' ? JSON.parse(req.body.category) : req.category;
-        const parsedTags = typeof req.body.tags === 'string' ? JSON.parse(req.body.tags) : req.body.tags;
-        const parsedProductImage = Array.isArray(uploadResult.secure_url) ? uploadResult.secure_url : [uploadResult.secure_url];
+    const parsedTags = typeof req.body.tags === 'string' ? JSON.parse(req.body.tags) : req.body.tags;
+    const parsedProductImage = Array.isArray(uploadResult.secure_url) ? uploadResult.secure_url : [uploadResult.secure_url];
 
 
-        console.log("Type of category:", typeof parsedCategory);
-        console.log("Type of tags:", typeof parsedTags);
-        console.log("Type of tags:", typeof parsedProductImage);
-
-//     const parsedCategory = Array.isArray(req.category)
-//     ? req.category
-//     : typeof req.category === 'string'
-//     ? JSON.parse(req.category)
-//     : [];
-// const parsedTags = Array.isArray(req.tags)
-//     ? req.tags
-//     : typeof req.tags === 'string'
-//     ? JSON.parse(req.tags)
-//     : [];
+    console.log("Type of category:", typeof parsedCategory);
+    console.log("Type of tags:", typeof parsedTags);
+    console.log("Type of tags:", typeof parsedProductImage);
 
     console.log(parsedCategory);
     console.log(parsedTags);
@@ -73,28 +59,24 @@ console.log("came here 6")
         shortDescription: body.shortDescription || '',
         description: body.description || '',
         productImage: parsedProductImage,
-        // productUrl: body.productUrl|| null,
         category: parsedCategory,
-        // category: body.category  ? JSON.parse(body.category) : [],
         tags: parsedTags,
-        // tags: body.tags? JSON.parse(body.tags) : [],
         isFeatured:body.isFeatured,
         
     });
 
-    console.log("NN");
-    // try {
-        // await axios.post('http://localhost:8080/addproduct', {
-        //     id:newProduct.id,
-        //     title: newProduct.title,
-        //     price: newProduct.price,
-        // },{ timeout: 300,
-        //     headers: { 'Content-Type': 'application/json' },
-        // });
-        // console.log('Seller agent notified about new product.');
-    // } catch (error) {
-    //     console.error('Failed to notify seller agent:', error);
-    // }
+    try {
+        await axios.post('http://localhost:8080/addproduct', {
+            id:newProduct.id,
+            title: newProduct.title,
+            price: newProduct.price,
+        },{ timeout: 300,
+            headers: { 'Content-Type': 'application/json' },
+        });
+        console.log('Seller agent notified about new product.');
+    } catch (error) {
+        console.error('Failed to notify seller agent:', error);
+    }
 
     return res.status(201).json({
         status: 'success',
